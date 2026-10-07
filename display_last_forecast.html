@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إشارة التداول</title>
+
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: "Segoe UI", Tahoma, Arial;
+            direction: rtl;
+            padding: 40px;
+        }
+
+        .card {
+            max-width: 420px;
+            margin: auto;
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .value {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .decision {
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: {{ color }};
+        }
+
+
+
+        .save-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    font-size: 13px;
+    border: none;
+    border-radius: 20px;
+    background: #111;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: #333;
+}
+
+
+    </style>
+</head>
+
+
+{% if is_admin %}
+{#<!-- زر التحميل -->#}
+{#<div style="text-align:center; margin-top:20px;">#}
+{#    <button onclick="downloadCard()"#}
+{#        style="padding:10px 20px; border:none; border-radius:8px; background:#111; color:white; cursor:pointer;">#}
+{#        📥 حفظ الكارد كصورة#}
+{#    </button>#}
+{#</div>#}
+
+<!-- مكتبة html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+function downloadCard() {
+    const card = document.getElementById("signalCard");
+
+    html2canvas(card, {
+        scale: 2,
+        backgroundColor: "#ffffff"
+    }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "mosbah-signal.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
+}
+</script>
+
+
+{#<button onclick="downloadCard()" class="save-btn">#}
+{#📥 حفظ كصورة#}
+{#</button>#}
+
+
+<button onclick="sendToTelegram()" class="save-btn">
+    📤 إرسال للتيليغرام
+</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+function sendToTelegram() {
+    const card = document.getElementById("signalCard");
+    const btn = document.querySelector(".save-btn");
+
+    btn.textContent = "⏳ جاري الإرسال...";
+    btn.disabled = true;
+
+    html2canvas(card, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
+        const imageBase64 = canvas.toDataURL("image/png");
+
+        fetch("/admin/send-signal-image", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: imageBase64 })
+        })
+        .then(res => res.json())
+        .then(data => {
+            btn.textContent = data.ok ? "✅ تم الإرسال!" : "❌ فشل الإرسال";
+            setTimeout(() => {
+                btn.textContent = "📤 إرسال للتيليغرام";
+                btn.disabled = false;
+            }, 3000);
+        });
+    });
+}
+</script>
+
+
+
+{% endif %}
+
+<body>
+
+{#<div class="card">#}
+<div class="card" id="signalCard">
+    <h2>📊 إشارة المصباح الذكي 1</h2>
+
+    <div class="value">🕒 {{ datetime }}</div>
+{#    <div class="value">💰 السعر المتوقع: {{ price }}</div>#}
+    <div class="value">💰 السعر المتوقع: {{ price }}</div>
+
+
+    <div class="decision">
+        {{ decision }}
+    </div>
+
+    <p style="font-size:12px; color:#777; margin-top:15px;">
+        ⚠️ هذه قراءة خوارزمية وليست توصية استثمارية
+    </p>
+</div>
+
+</body>
+</html>
