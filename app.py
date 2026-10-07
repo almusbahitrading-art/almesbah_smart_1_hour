@@ -61,7 +61,7 @@ def admin_required(f):
 # ---------------- الصفحات العامة ----------------
 @app.route("/")
 def landing():
-    return send_from_directory(PAGES_DIR, "landing.html")
+    return redirect("/admin")
 
 
 @app.route("/login.html")
