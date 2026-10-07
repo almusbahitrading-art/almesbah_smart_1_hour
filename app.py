@@ -13,9 +13,9 @@ from sqlalchemy import create_engine
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PAGES_DIR = os.path.join(BASE_DIR, "pages")
+PAGES_DIR = BASE_DIR
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=BASE_DIR)
 app.secret_key = os.getenv("SECRET_KEY", "change-me")
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # 5MB
 
