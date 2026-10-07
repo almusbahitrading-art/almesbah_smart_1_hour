@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>تنبؤات أسعار الذهب - المصباح الذكي</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(135deg, #000, #1a1a1a);
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    /* ============================================================
+       الجنّي الذهبي — هالة متوهجة + حركة
+    ============================================================ */
+    .genie-glow {
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: radial-gradient(circle, rgba(255,215,100,0.5), rgba(255,215,100,0.15), transparent 70%);
+        border-radius: 50%;
+        filter: blur(20px);
+        animation: geniePulse 3s ease-in-out infinite;
+        z-index: -1;
+    }
+
+    @keyframes geniePulse {
+        0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+        50% { transform: translateX(-50%) scale(1.15); opacity: 0.8; }
+        100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+    }
+
+    /* ============================================================
+       الدخان المتصاعد من المصباح
+    ============================================================ */
+    .smoke {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        animation: smokeFloat 4s infinite;
+        filter: blur(3px);
+    }
+
+    .smoke:nth-child(1) {
+        animation-delay: 0s;
+        left: 52%;
+    }
+    .smoke:nth-child(2) {
+        animation-delay: 1s;
+        left: 48%;
+    }
+    .smoke:nth-child(3) {
+        animation-delay: 2s;
+        left: 50%;
+    }
+
+    @keyframes smokeFloat {
+        0% { transform: translate(-50%, 0) scale(0.5); opacity: 0.6; }
+        50% { transform: translate(-50%, -50px) scale(1); opacity: 0.3; }
+        100% { transform: translate(-50%, -90px) scale(1.3); opacity: 0; }
+    }
+
+    /* ============================================================
+       مصباح علاء الدين
+    ============================================================ */
+    .lamp-container {
+        width: 260px;
+        margin: 60px auto;
+        position: relative;
+    }
+
+    /* الهالة (الجنّي) خلف المصباح */
+    .lamp-container .genie-glow {
+        position: absolute;
+        top: -80px;
+        left: 50%;
+    }
+
+    .lamp-body {
+        width: 220px;
+        height: 65px;
+        background: linear-gradient(90deg, #c7a24d, #ffd87d, #b0883a);
+        border-radius: 120px 120px 55px 55px;
+        margin: auto;
+        position: relative;
+        box-shadow: 0 0 20px #ffdf91;
+    }
+
+    .lamp-spout {
+        width: 100px;
+        height: 22px;
+        background: linear-gradient(90deg, #b0883a, #ffcd6a);
+        position: absolute;
+        right: -85px;
+        top: 22px;
+        border-radius: 0 50px 50px 0;
+        transform: skewX(20deg);
+        box-shadow: 0 0 15px #ffdf91;
+    }
+
+    .lamp-spout-tip {
+        width: 22px;
+        height: 12px;
+        background: #d4a447;
+        border-radius: 8px 8px 50% 50%;
+        position: absolute;
+        right: -105px;
+        top: 28px;
+        box-shadow: 0 0 12px #d4a447;
+    }
+
+    .lamp-base {
+        width: 150px;
+        height: 28px;
+        background: linear-gradient(90deg, #b88b34, #ffd87d);
+        margin: 0 auto;
+        border-radius: 30px;
+        position: relative;
+        top: -5px;
+        box-shadow: 0 0 15px #ffdf91;
+    }
+
+    .lamp-top {
+        width: 55px;
+        height: 28px;
+        background: linear-gradient(90deg, #b88b34, #ffd87d);
+        margin: -10px auto;
+        border-radius: 30px 30px 10px 10px;
+        box-shadow: 0 0 12px #ffdf91;
+    }
+
+    .lamp-handle {
+        width: 80px;
+        height: 80px;
+        border: 12px solid #d9b056;
+        border-radius: 50%;
+        position: absolute;
+        left: -55px;
+        top: -10px;
+        border-left-color: transparent;
+        box-shadow: 0 0 10px #ffdf91;
+    }
+
+    /* ============================================================
+       عنوان الموقع
+    ============================================================ */
+    h1 {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: #ffd86b;
+        text-shadow: 0 0 12px #ffc850;
+        margin-top: -20px;
+    }
+
+.lamp-container {
+    width: 260px; /* ثابت للحفاظ على الشكل */
+    margin: 60px auto;
+    position: relative;
+}
+
+@media (max-width: 600px) {
+    .lamp-container {
+        width: 180px; /* تصغير المصباح على الهواتف */
+        margin: 40px auto;
+    }
+    h1 { font-size: 22px; }
+    .price-value { font-size: 28px; }
+    .predict-title { font-size: 20px; }
+    .predict-text { font-size: 16px; }
+}
+
+
+
+    /* ============================================================
+       صندوق السعر + السهم
+    ============================================================ */
+    .price-box {
+        width: 90%;
+        margin: 25px auto;
+        padding: 20px;
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 0 20px #000 inset;
+    }
+
+    .price-title {
+        font-size: 22px;
+        color: #bbb;
+    }
+
+    .price-value {
+        font-size: 38px;
+        font-weight: bold;
+        color: #ffd86b;
+        margin-top: 10px;
+        text-shadow: 0 0 10px #ffe08a;
+    }
+
+    /* سهم التداول */
+    .arrow-up, .arrow-down {
+        width: 0;
+        height: 0;
+        margin: 20px auto;
+        animation: pulse 1s infinite;
+    }
+
+    .arrow-up {
+        border-left: 22px solid transparent;
+        border-right: 22px solid transparent;
+        border-bottom: 32px solid #00ff88;
+    }
+
+    .arrow-down {
+        border-left: 22px solid transparent;
+        border-right: 22px solid transparent;
+        border-top: 32px solid #ff5555;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: .7; }
+        50% { transform: scale(1.2); opacity: 1; }
+        100% { transform: scale(1); opacity: .7; }
+    }
+
+    .trend-text-up { color: #00ff88; font-size: 22px; font-weight: bold; }
+    .trend-text-down { color: #ff5555; font-size: 22px; font-weight: bold; }
+
+    /* ============================================================
+       صندوق التنبؤ
+    ============================================================ */
+    .predict-box {
+        width: 90%;
+        margin: 20px auto 60px;
+        padding: 20px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 10px;
+        box-shadow: 0 0 15px #000 inset;
+    }
+
+    .predict-title {
+        font-size: 24px;
+        color: #ffd86b;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .predict-text {
+        font-size: 18px;
+        color: #ccc;
+        line-height: 1.8;
+        text-align: center;
+    }
+
+</style>
+</head>
+
+<body>
+
+    <!-- مصباح علاء الدين + الجنّي + الدخان -->
+    <div class="lamp-container">
+
+        <!-- الجنّي الذهبي -->
+        <div class="genie-glow"></div>
+
+        <!-- الدخان -->
+        <div class="smoke"></div>
+        <div class="smoke"></div>
+        <div class="smoke"></div>
+
+        <!-- المصباح -->
+        <div class="lamp-handle"></div>
+        <div class="lamp-body"></div>
+        <div class="lamp-top"></div>
+        <div class="lamp-spout"></div>
+        <div class="lamp-spout-tip"></div>
+        <div class="lamp-base"></div>
+    </div>
+
+    <h1>تنبؤات أسعار الذهب - المصباح الذكي</h1>
+
+    <!-- السعر الحالي -->
+    <div class="price-box">
+        <div class="price-title">السعر الحالي للذهب (XAU/USD)</div>
+        <div class="price-value">4085.850</div>
+
+        <!-- مثال: صعود -->
+        <div class="arrow-up"></div>
+        <div class="trend-text-up">اتجاه صاعد</div>
+
+        <div class="arrow-down"></div>
+        <div class="trend-text-down">اتجاه هابط</div>
+    </div>
+
+    <!-- التنبؤ -->
+    <div class="predict-box">
+        <div class="predict-title">تنبؤات الـ 4 ساعات القادمة</div>
+        <div class="predict-text">
+            سيظهر هنا تحليل حركة الذهب وتوقع الاتجاه القادم حسب نموذج وخبراء المصباح الذكي.
+        </div>
+    </div>
+
+</body>
+</html>
